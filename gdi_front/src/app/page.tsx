@@ -1,9 +1,13 @@
-import Image from "next/image";
+"use client";
 
-export default function Home() {
+import { LoginForm } from "@/components/login/login-form";
+
+export default function LoginPage() {
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-     <h1>Hello World</h1>
+    <div className="bg-gradient-to-br from-white to-red-50 dark:from-zinc-900 dark:to-zinc-950 flex min-h-svh flex-col items-center justify-center p-6 md:p-10">
+      <div className="w-full max-w-sm md:max-w-3xl">
+        <LoginForm />
+      </div>
     </div>
   );
 }
