@@ -1,8 +1,11 @@
 package com.example.api_gdi.controller;
 
 import com.example.api_gdi.model.Equipment;
+import com.example.api_gdi.model.EquipmentStatus;
 import com.example.api_gdi.services.EquipmentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,7 +21,11 @@ public class EquipmentController {
 
     @PostMapping
     public Equipment createEquipment(@RequestBody Equipment equipment){
-        return equipmentService.save(equipment);
+        if (equipment.getStatus() == null){
+            equipment.setStatus(EquipmentStatus.DISPONIVEL);
+        }
+        Equipment savedEquipment = equipmentService.save(equipment);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedEquipment).getBody();
     }
 
     //READ(By ID)
