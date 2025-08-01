@@ -36,7 +36,7 @@ public class EquipmentController {
 
     //READ(all)
     @GetMapping
-    public List<Equipment> getallEquipments(){
+    public List<Equipment> getAllEquipments(){
         return equipmentService.findAll();
     }
 

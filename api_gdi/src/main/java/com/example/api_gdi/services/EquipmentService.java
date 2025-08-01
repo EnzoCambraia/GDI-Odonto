@@ -2,6 +2,7 @@ package com.example.api_gdi.services;
 
 
 import com.example.api_gdi.model.Equipment;
+import com.example.api_gdi.model.User;
 import com.example.api_gdi.repository.EquipmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
