@@ -2,7 +2,6 @@
 
 import * as React from "react";
 import { SquareTerminal } from "lucide-react";
-
 import { NavMain } from "@/components/appbar/nav-main";
 import { NavUser } from "@/components/appbar/nav-user";
 import {
@@ -23,6 +22,7 @@ const data = {
       title: "Dashboard",
       url: "#",
       isActive: true,
+      icon: SquareTerminal,
       items: [
         {
           title: "Tabelas",
@@ -34,6 +34,7 @@ const data = {
       title: "Equipamentos",
       url: "#",
       isActive: true,
+      icon: SquareTerminal,
       items: [
         {
           title: "Cadastro de Equipamentos",
