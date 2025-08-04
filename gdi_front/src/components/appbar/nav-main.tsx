@@ -9,7 +9,6 @@ import {
 } from "@/components/ui/collapsible";
 import {
   SidebarGroup,
-  SidebarGroupLabel,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
@@ -35,7 +34,6 @@ export function NavMain({
 }) {
   return (
     <SidebarGroup>
-      <SidebarGroupLabel className={`font-bold text-lg ${themeClasses.sidebar.text}`}>GDI-Odonto</SidebarGroupLabel>
       <SidebarMenu>
         {items.map((item) => (
           <Collapsible

@@ -28,7 +28,7 @@ export function LoginForm({
     if (email === mockUser.email && password === mockUser.password) {
       toast.success("Login realizado com sucesso!");
       setError("");
-      router.push("/dashboard/tabelas");
+      router.push("/dashboard");
     } else {
       console.log("Login failed");
       toast.error("Email ou senha inválidos");
