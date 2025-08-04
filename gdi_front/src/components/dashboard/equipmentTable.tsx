@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/table";
 import { StatusBadge } from "./statusBadge";
 import { equipamentService } from "@/services/equipmentService";
+import { Search, Filter, Package } from "lucide-react";
 
 interface Equipment {
   id: string;
@@ -60,7 +61,7 @@ export function EquipmentTable({
 
   useEffect(() => {
     fetchEquipamentos();
-  }, []); 
+  }, []);
 
   const filteredEquipamentos = useMemo(() => {
     return equipamentos.filter((item) => {
@@ -77,77 +78,172 @@ export function EquipmentTable({
     });
   }, [equipamentos, search, statusFilter]);
 
+  const LoadingRows = () => (
+    <>
+      {[...Array(5)].map((_, i) => (
+        <TableRow key={i} className="animate-pulse">
+          <TableCell>
+            <div className="h-4 bg-muted rounded w-32"></div>
+          </TableCell>
+          <TableCell>
+            <div className="h-4 bg-muted rounded w-24"></div>
+          </TableCell>
+          <TableCell>
+            <div className="h-4 bg-muted rounded w-8"></div>
+          </TableCell>
+          <TableCell>
+            <div className="h-4 bg-muted rounded w-8"></div>
+          </TableCell>
+          <TableCell>
+            <div className="h-6 bg-muted rounded-full w-20"></div>
+          </TableCell>
+        </TableRow>
+      ))}
+    </>
+  );
+
   return (
     <div className="flex flex-col flex-1 rounded-xl overflow-hidden border bg-card shadow-sm">
-      <div className="p-4 border-b">
-        <h2 className="text-xl font-semibold">Inventário de Equipamentos</h2>
-        <p className="text-sm text-muted-foreground">
-          Equipamentos disponíveis e emprestados
-        </p>
+      <div className="p-6 border-b bg-gradient-to-r from-background to-muted/20">
+        <div>
+          <h2 className="text-2xl font-bold tracking-tight">
+            Inventário de Equipamentos
+          </h2>
+          <p className="text-sm text-muted-foreground">
+            Gerencie todos os equipamentos disponíveis e emprestados
+          </p>
+        </div>
       </div>
 
-      <div className="flex flex-col md:flex-row items-center gap-4 p-4 border-b">
-        <Input
-          placeholder="Buscar por nome ou categoria..."
-          value={search}
-          onChange={(e) => onSearchChange(e.target.value)}
-          className="md:w-1/3"
-        />
+      <div className="p-4 border-b bg-muted/20">
+        <div className="flex flex-col md:flex-row items-center gap-4">
+          <div className="relative flex-1 md:max-w-md">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <Input
+              placeholder="Buscar por nome ou categoria..."
+              value={search}
+              onChange={(e) => onSearchChange(e.target.value)}
+              className="pl-10 bg-background border-0 shadow-sm focus:shadow-md transition-shadow"
+            />
+          </div>
 
-        <Select onValueChange={onStatusFilterChange}>
-          <SelectTrigger className="w-[200px]">
-            <SelectValue placeholder="Filtrar por status" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">Todos</SelectItem>
-            <SelectItem value="DISPONIVEL">Disponível</SelectItem>
-            <SelectItem value="EMPRESTADO">Emprestado</SelectItem>
-            <SelectItem value="INDISPONIVEL">Indisponível</SelectItem>
-          </SelectContent>
-        </Select>
+          <div className="relative">
+            <Filter className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground z-10" />
+            <Select onValueChange={onStatusFilterChange} defaultValue="all">
+              <SelectTrigger className="w-[200px] pl-10 bg-background border-0 shadow-sm focus:shadow-md transition-shadow">
+                <SelectValue placeholder="Filtrar por status" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">Todos os Status</SelectItem>
+                <SelectItem value="DISPONIVEL">
+                  <div className="flex items-center gap-2">
+                    <div className="w-2 h-2 rounded-full bg-green-500"></div>
+                    Disponível
+                  </div>
+                </SelectItem>
+                <SelectItem value="EMPRESTADO">
+                  <div className="flex items-center gap-2">
+                    <div className="w-2 h-2 rounded-full bg-yellow-500"></div>
+                    Emprestado
+                  </div>
+                </SelectItem>
+                <SelectItem value="INDISPONIVEL">
+                  <div className="flex items-center gap-2">
+                    <div className="w-2 h-2 rounded-full bg-red-500"></div>
+                    Indisponível
+                  </div>
+                </SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
       </div>
 
-      <div className="overflow-auto h-full">
-        <Table className="min-w-full text-sm">
-          <TableHeader className="sticky top-0 bg-background z-10 border-b">
+      <div className="overflow-auto flex-1">
+        <Table className="min-w-full">
+          <TableHeader className="sticky top-0 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 z-10 border-b">
             <TableRow>
-              <TableHead>Nome</TableHead>
-              <TableHead>Categoria</TableHead>
-              <TableHead>Total</TableHead>
-              <TableHead>Disponível</TableHead>
-              <TableHead>Status</TableHead>
+              <TableHead className="font-semibold text-foreground">
+                Nome do Equipamento
+              </TableHead>
+              <TableHead className="font-semibold text-foreground">
+                Categoria
+              </TableHead>
+              <TableHead className="font-semibold text-foreground text-center">
+                Total
+              </TableHead>
+              <TableHead className="font-semibold text-foreground text-center">
+                Disponível
+              </TableHead>
+              <TableHead className="font-semibold text-foreground text-center">
+                Status
+              </TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {loading ? (
-              <TableRow>
-                <TableCell
-                  colSpan={5}
-                  className="text-center py-6 text-muted-foreground"
-                >
-                  Carregando equipamentos...
-                </TableCell>
-              </TableRow>
+              <LoadingRows />
             ) : (
               <>
                 {filteredEquipamentos.map((item) => (
-                  <TableRow key={item.id}>
-                    <TableCell>{item.name}</TableCell>
-                    <TableCell>{item.category}</TableCell>
-                    <TableCell>{item.qty_total}</TableCell>
-                    <TableCell>{item.qty_available}</TableCell>
-                    <TableCell>
+                  <TableRow
+                    key={item.id}
+                    className="hover:bg-muted/50 transition-colors group"
+                  >
+                    <TableCell className="font-medium py-4">
+                      <div className="flex items-center gap-3">
+                        <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
+                          <Package className="h-4 w-4 text-primary" />
+                        </div>
+                        {item.name}
+                      </div>
+                    </TableCell>
+                    <TableCell className="py-4">
+                      <span className="px-2 py-1 rounded-md bg-secondary/50 text-secondary-foreground text-xs font-medium">
+                        {item.category}
+                      </span>
+                    </TableCell>
+                    <TableCell className="text-center py-4">
+                      <div className="flex items-center justify-center gap-2">
+                        <span className="font-mono font-medium">
+                          {item.qty_total}
+                        </span>
+                        <span className="text-xs text-muted-foreground">
+                          un.
+                        </span>
+                      </div>
+                    </TableCell>
+                    <TableCell className="text-center py-4">
+                      <div className="flex items-center justify-center gap-2">
+                        <span className="font-mono font-medium text-green-600 dark:text-green-400">
+                          {item.qty_available}
+                        </span>
+                        <span className="text-xs text-muted-foreground">
+                          un.
+                        </span>
+                      </div>
+                    </TableCell>
+                    <TableCell className="text-center py-4">
                       <StatusBadge status={item.status} />
                     </TableCell>
                   </TableRow>
                 ))}
                 {filteredEquipamentos.length === 0 && !loading && (
                   <TableRow>
-                    <TableCell
-                      colSpan={5}
-                      className="text-center py-6 text-muted-foreground"
-                    >
-                      Nenhum equipamento encontrado.
+                    <TableCell colSpan={5} className="text-center py-12">
+                      <div className="flex flex-col items-center gap-3">
+                        <div className="p-3 rounded-full bg-muted">
+                          <Package className="h-6 w-6 text-muted-foreground" />
+                        </div>
+                        <div>
+                          <p className="font-medium text-muted-foreground">
+                            Nenhum equipamento encontrado
+                          </p>
+                          <p className="text-sm text-muted-foreground">
+                            Tente ajustar os filtros de busca
+                          </p>
+                        </div>
+                      </div>
                     </TableCell>
                   </TableRow>
                 )}

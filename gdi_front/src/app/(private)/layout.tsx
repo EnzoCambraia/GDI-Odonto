@@ -23,7 +23,7 @@ function DynamicBreadcrumb() {
   const [mounted, setMounted] = useState(false);
 
   const routeNames: Record<string, string> = {
-    "/dashboard/tabelas": "Tabelas",
+    "/dashboard": "Dashboard",
     "/equipamentos": "Equipamentos",
     "/equipamentos/cadastro": "Cadastrar Equipamento",
     "/emprestimos": "Empréstimos",
@@ -72,7 +72,7 @@ export default function RootLayout({
       <AppSidebar />
       <SidebarInset>
         <header
-          className={`flex h-16 shrink-0 items-center  justify-between transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12 ${themeClasses.appbar.background} ${themeClasses.appbar.text}`}
+          className={`flex h-16 mb-2 shrink-0 items-center justify-between transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12 ${themeClasses.appbar.background} ${themeClasses.appbar.text}`}
         >
           <div className="flex items-center gap-2 px-4">
             <SidebarTrigger className="-ml-1" />

@@ -3,6 +3,7 @@ import "./globals.css";
 import { cn } from "@/lib/utils";
 import { Toaster } from "@/components/ui/sonner";
 import { ThemeProvider } from "@/components/ui/theme-provider";
+import { ThemeToggle } from "@/components/ui/theme-toggle";
 
 export const metadata: Metadata = {
   title: "GDI-Odonto",
@@ -16,11 +17,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body
-        className={cn(
-          "min-h-screen bg-background antialiased",
-        )}
-      >
+      <body className={cn("min-h-screen bg-background antialiased")}>
+        <ThemeToggle />
         <ThemeProvider>
           {children}
           <Toaster richColors position="top-right" />
