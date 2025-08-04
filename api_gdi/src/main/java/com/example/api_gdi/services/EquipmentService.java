@@ -28,4 +28,18 @@ public class EquipmentService {
         return equipmentRepository.findAll();
     }
 
+    public Equipment update(Long id, Equipment equipmentDetails){
+        Equipment equipment = findById(id);
+        equipment.setName(equipmentDetails.getName());
+        equipment.setCategory(equipmentDetails.getCategory());
+        equipment.setQty_total(equipmentDetails.getQty_total());
+        equipment.setQty_available(equipmentDetails.getQty_available());
+        equipment.setStatus(equipmentDetails.getStatus());
+        return equipmentRepository.save(equipment);
+    }
+
+    public void delete(Long id){
+        equipmentRepository.deleteById(id);
+    }
+
 }

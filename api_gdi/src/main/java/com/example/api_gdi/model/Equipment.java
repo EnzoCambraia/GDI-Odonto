@@ -20,7 +20,9 @@ public class Equipment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+
     private String name;
+
     private String category;
     private Integer qty_total;
     private Integer qty_available;

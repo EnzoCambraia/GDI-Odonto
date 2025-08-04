@@ -18,7 +18,6 @@ public class EquipmentController {
     private EquipmentService equipmentService;
 
     //CREATE
-
     @PostMapping
     public Equipment createEquipment(@RequestBody Equipment equipment){
         if (equipment.getStatus() == null){
@@ -40,4 +39,15 @@ public class EquipmentController {
         return equipmentService.findAll();
     }
 
+    // UPDATE
+    @PutMapping("/{id}")
+    public Equipment updateEquipment(@PathVariable Long id, @RequestBody Equipment equipmentDetails){
+     return equipmentService.update(id, equipmentDetails);
+    }
+
+    //DELETE
+    @DeleteMapping("/{id}")
+    public void deleteEquipment(@PathVariable Long id){
+        equipmentService.delete(id);
+    }
 }
