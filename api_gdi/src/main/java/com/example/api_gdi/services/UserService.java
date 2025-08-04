@@ -11,12 +11,32 @@ import java.util.List;
 @RequiredArgsConstructor
 
 public class UserService {
-    private final UserRepository repository;
+    private final UserRepository userRepository;
+
+    public User save(User user){
+        return userRepository.save(user);
+    }
 
     public List<User> getAllUsers(){
-        List<User> users = repository.findAll();
+        List<User> users = userRepository.findAll();
         System.out.println("Teste" + users);
         return users;
     }
 
+    public User findById(Long id){
+        return userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Usuário não localizado pelo ID: " + id));
+    }
+
+    public User update(Long id, User userDetails){
+        User user = findById(id);
+        user.setName(userDetails.getName());
+        user.setEmail(userDetails.getEmail());
+        user.setPassword(userDetails.getPassword());
+        return userRepository.save(user);
+    }
+
+    public void delete(Long id){
+        userRepository.deleteById(id);
+    }
 }
