@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useCallback, useMemo, memo } from "react";
 import { DialogTitle, DialogContent, Dialog } from "../ui/dialog";
 import { Button } from "../ui/button";
 import { Label } from "../ui/label";
@@ -13,10 +13,10 @@ interface CreateEquipmentModalProps {
     category: string;
     qty_total: string;
     qty_available: string;
-  }) => void;
+  }) => Promise<void>;
 }
 
-export function CreateEquipmentModal({
+export const CreateEquipmentModal = memo(function CreateEquipmentModal({
   isOpen,
   onClose,
   onSubmit,
@@ -30,38 +30,79 @@ export function CreateEquipmentModal({
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
+  const handleInputChange = useCallback(
+    (field: keyof typeof formData) =>
+      (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { value } = e.target;
+        setFormData((prev) => ({ ...prev, [field]: value }));
+      },
+    []
+  );
 
-    try {
-      await onSubmit(formData);
-      setFormData({ name: "", category: "", qty_total: "", qty_available: "" });
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
+  const maxAvailable = useMemo(() => {
+    const total = parseInt(formData.qty_total);
+    return isNaN(total) ? undefined : total;
+  }, [formData.qty_total]);
 
-  const handleClose = () => {
-    if (!isSubmitting) {
-      onClose();
-      setTimeout(() => {
+  const isFormValid = useMemo(() => {
+    const { name, category, qty_total, qty_available } = formData;
+    const totalNum = parseInt(qty_total);
+    const availableNum = parseInt(qty_available);
+
+    return (
+      name.trim() !== "" &&
+      category.trim() !== "" &&
+      !isNaN(totalNum) &&
+      totalNum > 0 &&
+      !isNaN(availableNum) &&
+      availableNum >= 0 &&
+      availableNum <= totalNum
+    );
+  }, [formData]);
+
+  const handleSubmit = useCallback(
+    async (e: React.FormEvent) => {
+      e.preventDefault();
+
+      if (!isFormValid || isSubmitting) return;
+
+      setIsSubmitting(true);
+
+      try {
+        await onSubmit(formData);
         setFormData({
           name: "",
           category: "",
           qty_total: "",
           qty_available: "",
         });
-      }, 200);
-    }
-  };
+      } catch (error) {
+        console.error("Erro ao criar equipamento:", error);
+      } finally {
+        setIsSubmitting(false);
+      }
+    },
+    [formData, onSubmit, isFormValid, isSubmitting]
+  );
+
+  const handleClose = useCallback(() => {
+    if (isSubmitting) return;
+
+    onClose();
+
+    setTimeout(() => {
+      setFormData({ name: "", category: "", qty_total: "", qty_available: "" });
+    }, 150);
+  }, [onClose, isSubmitting]);
+
+  if (!isOpen) return null;
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
       <DialogContent className="sm:max-w-[480px] p-0 overflow-hidden">
-        <div className="relative bg-gradient-to-r from-primary/10 via-primary/5 to-background p-6 border-b">
+        <div className="bg-background p-6 border-b">
           <div className="flex items-center gap-3 mb-2">
-            <div className="p-2 rounded-lg bg-primary/20 border">
+            <div className="p-2 rounded-lg bg-primary/10 border">
               <Package className="h-5 w-5 text-primary" />
             </div>
             <div>
@@ -75,7 +116,8 @@ export function CreateEquipmentModal({
           </div>
         </div>
 
-        <form onSubmit={handleSubmit} className="p-6 space-y-6">
+        <div className="p-6 space-y-6">
+          {/* Nome */}
           <div className="space-y-2">
             <Label
               htmlFor="name"
@@ -84,21 +126,19 @@ export function CreateEquipmentModal({
               <Package className="h-4 w-4 text-primary" />
               Nome do Equipamento
             </Label>
-            <div className="relative">
-              <Input
-                id="name"
-                value={formData.name}
-                onChange={(e) =>
-                  setFormData({ ...formData, name: e.target.value })
-                }
-                placeholder="Ex: Espelho de mão"
-                required
-                disabled={isSubmitting}
-                className="pl-4 h-11 transition-all focus:ring-2 focus:ring-primary/20 border-muted-foreground/20"
-              />
-            </div>
+            <Input
+              id="name"
+              value={formData.name}
+              onChange={handleInputChange("name")}
+              placeholder="Ex: Espelho de mão"
+              required
+              disabled={isSubmitting}
+              className="h-11"
+              autoComplete="off"
+            />
           </div>
 
+          {/* Categoria */}
           <div className="space-y-2">
             <Label
               htmlFor="category"
@@ -107,21 +147,19 @@ export function CreateEquipmentModal({
               <Tag className="h-4 w-4 text-primary" />
               Categoria
             </Label>
-            <div className="relative">
-              <Input
-                id="category"
-                value={formData.category}
-                onChange={(e) =>
-                  setFormData({ ...formData, category: e.target.value })
-                }
-                placeholder="Ex: "
-                required
-                disabled={isSubmitting}
-                className="pl-4 h-11 transition-all focus:ring-2 focus:ring-primary/20 border-muted-foreground/20"
-              />
-            </div>
+            <Input
+              id="category"
+              value={formData.category}
+              onChange={handleInputChange("category")}
+              placeholder="Ex: Beleza"
+              required
+              disabled={isSubmitting}
+              className="h-11"
+              autoComplete="off"
+            />
           </div>
 
+          {/* Quantidades */}
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
               <Label
@@ -137,13 +175,12 @@ export function CreateEquipmentModal({
                   type="number"
                   min="1"
                   value={formData.qty_total}
-                  onChange={(e) =>
-                    setFormData({ ...formData, qty_total: e.target.value })
-                  }
+                  onChange={handleInputChange("qty_total")}
                   placeholder="0"
                   required
                   disabled={isSubmitting}
-                  className="pl-4 pr-12 h-11 transition-all focus:ring-2 focus:ring-primary/20 border-muted-foreground/20"
+                  className="pr-12 h-11"
+                  autoComplete="off"
                 />
                 <div className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-muted-foreground pointer-events-none">
                   un.
@@ -164,15 +201,14 @@ export function CreateEquipmentModal({
                   id="qty_available"
                   type="number"
                   min="0"
-                  max={formData.qty_total || undefined}
+                  max={maxAvailable}
                   value={formData.qty_available}
-                  onChange={(e) =>
-                    setFormData({ ...formData, qty_available: e.target.value })
-                  }
+                  onChange={handleInputChange("qty_available")}
                   placeholder="0"
                   required
                   disabled={isSubmitting}
-                  className="pl-4 pr-12 h-11 transition-all focus:ring-2 focus:ring-primary/20 border-muted-foreground/20"
+                  className="pr-12 h-11"
+                  autoComplete="off"
                 />
                 <div className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-muted-foreground pointer-events-none">
                   un.
@@ -181,13 +217,15 @@ export function CreateEquipmentModal({
             </div>
           </div>
 
+          {/* Info Helper */}
           <div className="p-3 bg-blue-50 dark:bg-blue-950/20 border border-blue-200 dark:border-blue-800 rounded-lg">
             <div className="text-xs text-blue-700 dark:text-blue-300 flex items-start gap-2">
-              <div className="w-1 h-1 rounded-full bg-blue-500 mt-1.5 flex-shrink-0"></div>
+              <div className="w-1 h-1 rounded-full bg-blue-500 mt-1.5 flex-shrink-0" />
               A quantidade disponível não pode ser maior que a quantidade total
             </div>
           </div>
 
+          {/* Buttons */}
           <div className="flex justify-end gap-3 pt-4 border-t">
             <Button
               type="button"
@@ -198,10 +236,12 @@ export function CreateEquipmentModal({
             >
               Cancelar
             </Button>
+
             <Button
               type="submit"
-              disabled={isSubmitting}
-              className="px-6 bg-primary hover:bg-primary/90"
+              onClick={handleSubmit}
+              disabled={!isFormValid || isSubmitting}
+              className="px-6 bg-primary hover:bg-primary/90 disabled:opacity-50"
             >
               {isSubmitting ? (
                 <div className="flex items-center gap-2">
@@ -216,8 +256,10 @@ export function CreateEquipmentModal({
               )}
             </Button>
           </div>
-        </form>
+        </div>
       </DialogContent>
     </Dialog>
   );
-}
+});
+
+CreateEquipmentModal.displayName = "CreateEquipmentModal";

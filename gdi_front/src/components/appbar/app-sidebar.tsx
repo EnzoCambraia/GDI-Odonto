@@ -41,14 +41,9 @@ const data = {
       icon: Package,
       items: [
         {
-          title: "Equipamentos",
-          url: "/equipamentos",
-          description: "Visualizar todos os equipamentos",
-        },
-        {
-          title: "Cadastrar Equipamento",
-          url: "/equipamentos/cadastro",
-          description: "Adicionar novo equipamento",
+          title: "Gerenciar Equipamentos",
+          url: "/equipamentos/gerenciamento",
+          description: "Visualizar todos os equipamentos e gerenciar",
         },
         {
           title: "Empréstimos",

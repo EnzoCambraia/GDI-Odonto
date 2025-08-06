@@ -46,10 +46,11 @@ export function EquipmentTable({
   const [equipamentos, setEquipamentos] = useState<Equipment[]>([]);
   const [loading, setLoading] = useState(true);
 
+useEffect(() => {
   const fetchEquipamentos = async () => {
     try {
       setLoading(true);
-      const data = await equipamentService.listarTodos();
+      const data = await equipamentService.getAll();
       setEquipamentos(data);
       onEquipamentosChange?.(data);
     } catch (error) {
@@ -59,9 +60,8 @@ export function EquipmentTable({
     }
   };
 
-  useEffect(() => {
-    fetchEquipamentos();
-  }, []);
+  fetchEquipamentos();
+}, [onEquipamentosChange]);
 
   const filteredEquipamentos = useMemo(() => {
     return equipamentos.filter((item) => {

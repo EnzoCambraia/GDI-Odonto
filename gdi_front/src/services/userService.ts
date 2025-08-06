@@ -1,7 +1,7 @@
-import api from "../lib/api";
+import api from "@/lib/api";
 
 export const usuarioService = {
-  async listarTodos() {
+  async getAll() {
     const response = await api.get("/users");
     return response.data;
   },

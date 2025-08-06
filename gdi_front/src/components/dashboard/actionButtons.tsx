@@ -24,7 +24,6 @@ export function ActionButtons({
       icon: Package,
       color: "bg-orange-100 text-orange-900 hover:bg-orange-200",
       onClick: onGerenciar,
-      disabled: true,
     },
   ];
 
