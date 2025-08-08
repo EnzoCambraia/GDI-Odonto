@@ -20,17 +20,27 @@ public class UserController {
     private final UserService userService;
 
 
+    @PostMapping
+    public ResponseEntity<User> createUser(@RequestBody User userData){
+        System.out.println(userData);
+        User savedUser = repository.save(userData);
+        System.out.println("Usuário salvo! " + savedUser);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedUser);
+    }
+
     @GetMapping
     public List<User> getAllUsers(){
         return userService.getAllUsers();
     }
 
-    @PostMapping
-    public ResponseEntity<User> createUser(@RequestBody User userData){
-        System.out.println(userData);
-        User savedUser = repository.save(userData);
-        System.out.println("Salvou" + savedUser);
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedUser);
+    @PutMapping("/{id}")
+    public User updateUser(@PathVariable Long id, @RequestBody User userDetails){
+        return userService.update(id, userDetails);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteUser(@PathVariable Long id){
+        userService.delete(id);
     }
 
 }

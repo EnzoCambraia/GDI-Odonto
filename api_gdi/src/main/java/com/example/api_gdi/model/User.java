@@ -16,7 +16,8 @@ public class User {
     private Long id;
     private String name;
     private String email;
-    private Integer registration;
+    private String password;
+
     @Column(name="created_at", insertable = false, updatable = false)
     private LocalDateTime created_at;
 }
