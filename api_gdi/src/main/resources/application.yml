@@ -1,0 +1,18 @@
+spring:
+  application:
+    name: api_gdi
+  datasource:
+    url: jdbc:postgresql://db.tzjbyjunwygekfiwftzg.supabase.co:5432/postgres?sslmode=require
+    username: postgres
+    password: calabocaorsano
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+
+logging:
+  level:
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql: TRACE
