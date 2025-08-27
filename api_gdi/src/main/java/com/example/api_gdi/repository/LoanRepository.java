@@ -18,7 +18,7 @@ public interface LoanRepository extends JpaRepository<Loan, Long> {
     Optional<Loan> findByIdWithItems(@Param("id") Long id);
 
      //Listar empréstimos ativos
-    List<Loan> findByIdWIthItems(@Param("id") Long id);
+    //List<Loan> findByIdWithItems(@Param("id") Long id);
 
     //Verifica se um aluno específico tem empréstimos ativos
     boolean existsByStudentCpfAndStatus(String cpf, LoanStatus status);
