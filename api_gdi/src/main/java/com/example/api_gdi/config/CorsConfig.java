@@ -12,7 +12,7 @@ public class CorsConfig implements WebMvcConfigurer {
         registry.addMapping("/api/**")
                 .allowedOrigins(
                         "http://localhost:3000",     // Next.js em desenvolvimento
-                        "https://seudominio.com"     // seu domínio em produção
+                        "https://seudominio.com"     // domínio em produção
                 )
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                 .allowedHeaders("*")
