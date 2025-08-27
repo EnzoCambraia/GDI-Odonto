@@ -2,13 +2,10 @@ package com.example.api_gdi.services;
 
 import com.example.api_gdi.dto.LoanItemRequest;
 import com.example.api_gdi.dto.LoanRequest;
-import com.example.api_gdi.model.Equipment;
-import com.example.api_gdi.model.Loan;
+import com.example.api_gdi.model.*;
 import com.example.api_gdi.repository.LoanRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
-import com.example.api_gdi.model.LoanEquipment;
-import com.example.api_gdi.model.LoanStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDateTime;
@@ -19,20 +16,26 @@ import java.util.List;
 public class LoanService {
     private final LoanRepository loanRepository;
     private final EquipmentService equipmentService;
+    private final UserService userService;
 
-    public LoanService(LoanRepository loanRepository, EquipmentService equipmentService) {
+    public LoanService(LoanRepository loanRepository, EquipmentService equipmentService, UserService userService) {
         this.loanRepository = loanRepository;
         this.equipmentService = equipmentService;
+        this.userService = userService;
     }
 
 
     public Loan createLoan(LoanRequest request){
+        User user = userService.findById(request.getUserId());
+
+        //Validação dos itens
         if (request.getItems() == null || request.getItems().isEmpty()){
             throw new IllegalArgumentException("O empréstimo deve conter itens");
         }
 
         //Criação do empréstimo
             Loan loan = new Loan();
+            loan.setUser(user);
             loan.setStudentName(request.getStudentName());
             loan.setStudentRegistry(request.getStudentRegistry());
             loan.setStudentCpf(request.getStudentCpf());
@@ -45,6 +48,7 @@ public class LoanService {
             //Processar cada item do empréstimo
             for (LoanItemRequest itemRequest : request.getItems()) {
                 Equipment equipment = equipmentService.findById(itemRequest.getEquipmentId());
+
                 //Validação do estoque
                 if (equipment.getQty_available() < itemRequest.getQuantity()){
                     throw new IllegalArgumentException("Quantidade indisponível para: " + equipment.getName());

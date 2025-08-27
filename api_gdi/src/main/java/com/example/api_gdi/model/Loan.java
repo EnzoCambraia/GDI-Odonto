@@ -16,28 +16,33 @@ public class Loan {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
-    @Column(nullable = false)
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
+    @Column(name = "student_name",nullable = false)
     private String studentName;
 
-    @Column(nullable = false)
+    @Column(name = "student_registry",nullable = false)
     private String studentRegistry;
 
-    @Column(nullable = false)
+    @Column(name = "student_cpf",nullable = false)
     private String studentCpf;
 
-    @Column(nullable = false)
+    @Column(name = "student_phone",nullable = false)
     private String studentPhone;
 
-    @Column(nullable = false)
+    @Column(name = "student_email",nullable = false)
     private String studentEmail;
 
-    @Column(nullable = false)
+    @Column(name = "start_date",nullable = false)
     private LocalDateTime startDate;
 
-    @Column
+    @Column(name = "end_date")
     private LocalDateTime endDate;
 
+    @Column(name = "return_date")
     private LocalDateTime returnDate;
 
     @Enumerated(EnumType.STRING)

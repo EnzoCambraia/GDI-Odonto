@@ -15,16 +15,22 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 public class LoanRequest {
-    @NotBlank
+
+    @NotNull(message = "ID do usuário é obrigatório")
+    private Long userId;
+
+    @NotBlank(message = "O preenchimento do campo de nome do aluno é obrigatório")
     private String studentName;
 
-    @NotBlank
+    @NotBlank(message = "O preenchimento do campo de Matrícula do aluno é obrigatório ")
     private String studentRegistry;
 
-    @NotBlank
+    @NotBlank(message = "O preenchimento do campo de CPF do Aluno é obrigatório")
     private String studentCpf;
 
     private String studentPhone;
+
+    @NotBlank(message = "O preenchimento do campo de Email do Aluno é obrigatório. Na falta de um e-mail, utilize o e-mail institucional da UnB")
     private String studentEmail;
 
     @NotNull

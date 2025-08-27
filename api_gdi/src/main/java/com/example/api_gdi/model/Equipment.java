@@ -16,7 +16,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
+@ToString(exclude = "loanEquipments")
 public class Equipment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
