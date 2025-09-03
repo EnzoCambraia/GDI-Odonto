@@ -1,5 +1,7 @@
 package com.example.api_gdi.model;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.ToString;
@@ -10,6 +12,9 @@ import java.time.LocalDateTime;
 @Table(name ="users", schema ="public")
 @Data
 @ToString
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

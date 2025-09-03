@@ -35,6 +35,7 @@ public class EquipmentController {
 
     //READ(all)
     @GetMapping
+    @ResponseBody
     public List<Equipment> getAllEquipments(){
         return equipmentService.findAll();
     }

@@ -1,5 +1,9 @@
 package com.example.api_gdi.model;
 
+// 1. ADICIONE ESTAS DUAS IMPORTAÇÕES
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -17,14 +21,16 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString(exclude = "loanEquipments")
+// 2. ADICIONE ESTA ANOTAÇÃO NO TOPO DA CLASSE
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id")
 public class Equipment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-
     private String name;
-
     private String category;
     private Integer qty_total;
     private Integer qty_available;
@@ -33,7 +39,6 @@ public class Equipment {
     @CreationTimestamp
     private LocalDateTime created_at;
 
-    //Testar o Update pelo status
     @Enumerated(EnumType.STRING)
     private EquipmentStatus status = EquipmentStatus.getDefault();
 
@@ -43,5 +48,4 @@ public class Equipment {
     public boolean isAvailableForLoan(int requestedQty){
         return qty_available >= requestedQty;
     }
-
 }

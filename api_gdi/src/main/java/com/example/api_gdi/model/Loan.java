@@ -1,5 +1,9 @@
 package com.example.api_gdi.model;
 
+// 1. ADICIONE ESTAS DUAS IMPORTAÇÕES
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,6 +16,10 @@ import java.util.List;
 @Table(name = "loans")
 @Data
 @NoArgsConstructor
+// 2. ADICIONE ESTA ANOTAÇÃO NO TOPO DA CLASSE
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id")
 public class Loan {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
