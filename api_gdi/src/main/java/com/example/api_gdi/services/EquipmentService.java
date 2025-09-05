@@ -1,7 +1,9 @@
 package com.example.api_gdi.services;
 
 
+import com.example.api_gdi.dto.EquipmentDTO;
 import com.example.api_gdi.model.Equipment;
+import com.example.api_gdi.model.EquipmentStatus;
 import com.example.api_gdi.model.User;
 import com.example.api_gdi.repository.EquipmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,14 +30,16 @@ public class EquipmentService {
         return equipmentRepository.findAll();
     }
 
-    public Equipment update(Long id, Equipment equipmentDetails){
-        Equipment equipment = findById(id);
-        equipment.setName(equipmentDetails.getName());
-        equipment.setCategory(equipmentDetails.getCategory());
-        equipment.setQty_total(equipmentDetails.getQty_total());
-        equipment.setQty_available(equipmentDetails.getQty_available());
-        equipment.setStatus(equipmentDetails.getStatus());
-        return equipmentRepository.save(equipment);
+    public EquipmentDTO update(Long id, EquipmentDTO equipmentDTO){
+        Equipment equipment = equipmentRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Equipamento não pode ser encontrado por ID: " + id) );
+        equipment.setName(equipmentDTO.getName());
+        equipment.setCategory(equipmentDTO.getCategory());
+        equipment.setQty_total(equipmentDTO.getQty_total());
+        equipment.setQty_available(equipmentDTO.getQty_available());
+        equipment.setStatus(EquipmentStatus.valueOf(equipmentDTO.getStatus()));
+        Equipment savedEquipment = equipmentRepository.save(equipment);
+        return new EquipmentDTO(savedEquipment);
     }
 
     public void delete(Long id){

@@ -46,7 +46,7 @@ public class Equipment {
     @Enumerated(EnumType.STRING)
     private EquipmentStatus status = EquipmentStatus.getDefault();
 
-    @OneToMany(mappedBy = "equipment")
+    @OneToMany(mappedBy = "equipment", fetch = FetchType.EAGER)
     private List<LoanEquipment> loanEquipments = new ArrayList<>();
 
     public boolean isAvailableForLoan(int requestedQty){

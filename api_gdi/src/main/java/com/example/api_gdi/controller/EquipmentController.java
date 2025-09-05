@@ -1,5 +1,6 @@
 package com.example.api_gdi.controller;
 
+import com.example.api_gdi.dto.EquipmentDTO;
 import com.example.api_gdi.model.Equipment;
 import com.example.api_gdi.model.EquipmentStatus;
 import com.example.api_gdi.services.EquipmentService;
@@ -42,8 +43,9 @@ public class EquipmentController {
 
     // UPDATE
     @PutMapping("/{id}")
-    public Equipment updateEquipment(@PathVariable Long id, @RequestBody Equipment equipmentDetails){
-     return equipmentService.update(id, equipmentDetails);
+    public ResponseEntity<EquipmentDTO> updateEquipment(@PathVariable Long id, @RequestBody EquipmentDTO equipmentDTO){
+        EquipmentDTO updatedDto = equipmentService.update(id, equipmentDTO);
+        return ResponseEntity.ok(updatedDto);
     }
 
     //DELETE
