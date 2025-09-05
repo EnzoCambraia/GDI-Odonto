@@ -21,9 +21,12 @@ public class User {
     @Column(name = "id")
     private Long id;
 
+    @Column(nullable = false)
     private String name;
+
+    @Column(nullable = false)
     private String email;
-    private String password;
+
 
     @Column(name="created_at", insertable = false, updatable = false)
     private LocalDateTime created_at;

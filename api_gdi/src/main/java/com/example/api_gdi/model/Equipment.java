@@ -30,9 +30,13 @@ public class Equipment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column
     private String name;
+    @Column
     private String category;
+    @Column
     private Integer qty_total;
+    @Column
     private Integer qty_available;
 
     @Column(name = "created_at", updatable = false)

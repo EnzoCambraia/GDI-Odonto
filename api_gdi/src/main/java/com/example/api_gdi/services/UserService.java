@@ -32,7 +32,6 @@ public class UserService {
         User user = findById(id);
         user.setName(userDetails.getName());
         user.setEmail(userDetails.getEmail());
-        user.setPassword(userDetails.getPassword());
         return userRepository.save(user);
     }
 
