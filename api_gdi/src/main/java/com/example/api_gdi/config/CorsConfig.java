@@ -9,10 +9,10 @@ public class CorsConfig implements WebMvcConfigurer {
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/api/**")
+        registry.addMapping("/api/**") // Note o /api/**, que cobre todos os endpoints dentro de /api/
                 .allowedOrigins(
-                        "http://localhost:3000",     // Next.js em desenvolvimento
-                        "https://seudominio.com"     // domínio em produção
+                        "http://localhost:3000",
+                        "http://localhost:3001" // Adicionei outra porta comum, caso precise
                 )
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                 .allowedHeaders("*")
