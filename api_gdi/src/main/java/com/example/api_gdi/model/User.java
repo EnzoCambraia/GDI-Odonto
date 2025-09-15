@@ -26,10 +26,6 @@ public class User implements UserDetails {
     @Column(nullable = false, unique = true)
     private String email;
 
-    // A senha real e segura continuará no Supabase.
-    @Column(nullable = false)
-    private String password;
-
     @Column(name = "created_at", insertable = false, updatable = false)
     private LocalDateTime created_at;
 
@@ -41,7 +37,7 @@ public class User implements UserDetails {
 
     @Override
     public String getPassword() {
-        return password;
+        return "";
     }
 
     @Override

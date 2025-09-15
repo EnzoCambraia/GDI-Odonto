@@ -1,9 +1,6 @@
 package com.example.api_gdi.model;
 
-// 1. ADICIONE ESTAS DUAS IMPORTAÇÕES
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-
+import com.fasterxml.jackson.annotation.JsonManagedReference; // Importação correta
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -20,11 +17,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString(exclude = "loanEquipments")
-// 2. ADICIONE ESTA ANOTAÇÃO NO TOPO DA CLASSE
-@JsonIdentityInfo(
-        generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "id")
+@ToString(exclude = "loanEquipments") // Manter isto é uma boa prática para evitar loops no log
 public class Equipment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -46,7 +39,10 @@ public class Equipment {
     @Enumerated(EnumType.STRING)
     private EquipmentStatus status = EquipmentStatus.getDefault();
 
-    @OneToMany(mappedBy = "equipment", fetch = FetchType.EAGER)
+    // 1. FetchType removido (padrão é LAZY, que é o correto)
+    // 2. Adicionado @JsonManagedReference para indicar o lado "pai" da serialização
+    @OneToMany(mappedBy = "equipment")
+    @JsonManagedReference("equipment-loanEquip")
     private List<LoanEquipment> loanEquipments = new ArrayList<>();
 
     public boolean isAvailableForLoan(int requestedQty){

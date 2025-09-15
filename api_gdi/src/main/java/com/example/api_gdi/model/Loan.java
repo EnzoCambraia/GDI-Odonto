@@ -1,9 +1,6 @@
 package com.example.api_gdi.model;
 
-// 1. ADICIONE ESTAS DUAS IMPORTAÇÕES
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-
+import com.fasterxml.jackson.annotation.JsonManagedReference; // Importação correta
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,22 +13,20 @@ import java.util.List;
 @Table(name = "loans")
 @Data
 @NoArgsConstructor
-// 2. ADICIONE ESTA ANOTAÇÃO NO TOPO DA CLASSE
-@JsonIdentityInfo(
-        generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "id")
 public class Loan {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    // A relação com User permanece LAZY, o que está perfeito.
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @Column(name = "student_name",nullable = false)
+    @Column(name = "student_name", nullable = false)
     private String studentName;
 
+    // ... todos os outros campos de estudante ...
     @Column(name = "student_registry",nullable = false)
     private String studentRegistry;
 
@@ -44,7 +39,8 @@ public class Loan {
     @Column(name = "student_email",nullable = false)
     private String studentEmail;
 
-    @Column(name = "start_date",nullable = false)
+
+    @Column(name = "start_date", nullable = false)
     private LocalDateTime startDate;
 
     @Column(name = "end_date")
@@ -57,13 +53,13 @@ public class Loan {
     @Column(nullable = false)
     private LoanStatus status = LoanStatus.ATIVO;
 
-
+    // Adicionado @JsonManagedReference para o lado "pai" da relação
     @OneToMany(mappedBy = "loan", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference("loan-loanEquip")
     private List<LoanEquipment> loanEquipments = new ArrayList<>();
 
     public void addLoanEquipment(LoanEquipment loanEquipment){
         loanEquipments.add(loanEquipment);
         loanEquipment.setLoan(this);
     }
-
 }
