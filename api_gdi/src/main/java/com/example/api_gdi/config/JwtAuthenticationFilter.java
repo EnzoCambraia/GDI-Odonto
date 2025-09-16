@@ -21,7 +21,7 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-    private final com.example.api_gdi.config.JwtService jwtService;
+    private final com.example.api_gdi.service.security.JwtService jwtService;
     private final UserDetailsService userDetailsService;
 
     @Override

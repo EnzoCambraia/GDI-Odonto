@@ -1,5 +1,6 @@
 package com.example.api_gdi.controller;
 
+import com.example.api_gdi.dto.LoanDTO;
 import com.example.api_gdi.dto.LoanRequest;
 import com.example.api_gdi.model.Loan;
 import com.example.api_gdi.services.LoanService;
@@ -29,7 +30,7 @@ public class LoanController {
     }
 
     @GetMapping("/ativos")
-    public ResponseEntity<List<Loan>> getActiveLoans() {
+    public ResponseEntity<List<LoanDTO>> getActiveLoans() { // Retorna List<LoanDTO>
         return ResponseEntity.ok(loanService.getActiveLoans());
     }
 }

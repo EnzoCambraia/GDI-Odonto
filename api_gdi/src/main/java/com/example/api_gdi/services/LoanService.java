@@ -1,5 +1,6 @@
 package com.example.api_gdi.services;
 
+import com.example.api_gdi.dto.LoanDTO;
 import com.example.api_gdi.dto.LoanItemRequest;
 import com.example.api_gdi.dto.LoanRequest;
 import com.example.api_gdi.model.*;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -89,7 +91,10 @@ public class LoanService {
         return loanRepository.save(loan);
     }
 
-    public List<Loan> getActiveLoans(){
-        return loanRepository.findByStatus(LoanStatus.ATIVO);
+    public List<LoanDTO> getActiveLoans() {
+        List<Loan> loans = loanRepository.findByStatus(LoanStatus.ATIVO);
+        return loans.stream()
+                .map(LoanDTO::new)
+                .collect(Collectors.toList());
     }
 }
