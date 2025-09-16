@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class LoanUserDTO {
-    private Long id;
+    private java.util.UUID id;
     private String name;
 
     // User to DTO

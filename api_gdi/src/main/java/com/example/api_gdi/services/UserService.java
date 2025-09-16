@@ -23,19 +23,19 @@ public class UserService {
         return users;
     }
 
-    public User findById(Long id){
+    public User findById(java.util.UUID id){
         return userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Usuário não localizado pelo ID: " + id));
     }
 
-    public User update(Long id, User userDetails){
+    public User update(java.util.UUID id, User userDetails){
         User user = findById(id);
         user.setName(userDetails.getName());
         user.setEmail(userDetails.getEmail());
         return userRepository.save(user);
     }
 
-    public void delete(Long id){
+    public void delete(java.util.UUID id){
         userRepository.deleteById(id);
     }
 }

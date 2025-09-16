@@ -17,7 +17,7 @@ import java.util.List;
 public class LoanRequest {
 
     @NotNull(message = "ID do usuário é obrigatório")
-    private Long userId;
+    private java.util.UUID userId;
 
     @NotBlank(message = "O preenchimento do campo de nome do aluno é obrigatório")
     private String studentName;
