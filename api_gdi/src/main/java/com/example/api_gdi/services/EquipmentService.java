@@ -37,7 +37,9 @@ public class EquipmentService {
         equipment.setCategory(equipmentDTO.getCategory());
         equipment.setQty_total(equipmentDTO.getQty_total());
         equipment.setQty_available(equipmentDTO.getQty_available());
-        equipment.setStatus(EquipmentStatus.valueOf(equipmentDTO.getStatus()));
+        if (equipmentDTO.getStatus() != null && !equipmentDTO.getStatus().isEmpty()) {
+            equipment.setStatus(EquipmentStatus.valueOf(equipmentDTO.getStatus()));
+        }
         Equipment savedEquipment = equipmentRepository.save(equipment);
         return new EquipmentDTO(savedEquipment);
     }

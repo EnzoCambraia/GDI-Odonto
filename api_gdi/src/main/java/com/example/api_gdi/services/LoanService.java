@@ -97,4 +97,11 @@ public class LoanService {
                 .map(LoanDTO::new)
                 .collect(Collectors.toList());
     }
+
+    public List<LoanDTO> getAllLoans(){
+        List<Loan> loans = loanRepository.findAll();
+        return loans.stream()
+                .map(LoanDTO::new)
+                .collect(Collectors.toList());
+    }
 }

@@ -33,4 +33,10 @@ public class LoanController {
     public ResponseEntity<List<LoanDTO>> getActiveLoans() { // Retorna List<LoanDTO>
         return ResponseEntity.ok(loanService.getActiveLoans());
     }
+
+    @GetMapping("/todos")
+    public ResponseEntity<List<LoanDTO>> getAllLoans(){
+        List<LoanDTO> loans = loanService.getAllLoans();
+        return ResponseEntity.ok(loans);
+    }
 }
