@@ -34,9 +34,9 @@ public class LoanController {
         return ResponseEntity.ok(loanService.getActiveLoans());
     }
 
-    @GetMapping("/todos")
+    @GetMapping
     public ResponseEntity<List<LoanDTO>> getAllLoans(){
-        List<LoanDTO> loans = loanService.getAllLoans();
-        return ResponseEntity.ok(loans);
+        List<LoanDTO> allLoans = loanService.getAllLoans();
+        return ResponseEntity.ok(allLoans);
     }
 }

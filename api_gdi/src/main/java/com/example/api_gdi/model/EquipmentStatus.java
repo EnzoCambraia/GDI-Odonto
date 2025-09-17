@@ -18,4 +18,6 @@ public enum EquipmentStatus {
     public String getDescricao() {
         return descricao;
     }
+
+
 }

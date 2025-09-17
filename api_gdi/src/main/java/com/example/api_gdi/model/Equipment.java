@@ -48,4 +48,15 @@ public class Equipment {
     public boolean isAvailableForLoan(int requestedQty){
         return qty_available >= requestedQty;
     }
+
+    @PrePersist // Rodar antes de um equip ser salvo pela primeira vez
+    @PreUpdate // Rodar antes de um equip ser atualizado
+    public void updateStatusBasedOnQuantity(){
+        if (this.qty_available <= 0){
+            this.qty_available = 0;
+            this.status = EquipmentStatus.INDISPONIVEL;
+        } else {
+            this.status = EquipmentStatus.DISPONIVEL;
+        }
+    }
 }
