@@ -54,6 +54,7 @@ public class Equipment {
     public void updateStatusBasedOnQuantity(){
         if (this.qty_available <= 0){
             this.qty_available = 0;
+
             this.status = EquipmentStatus.INDISPONIVEL;
         } else {
             this.status = EquipmentStatus.DISPONIVEL;

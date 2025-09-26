@@ -15,8 +15,8 @@ import java.util.List;
 @NoArgsConstructor
 public class Loan {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private java.util.UUID id;
 
     // A relação com User permanece LAZY, o que está perfeito.
     @ManyToOne(fetch = FetchType.LAZY)

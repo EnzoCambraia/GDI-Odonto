@@ -23,10 +23,10 @@ public class LoanController {
         return ResponseEntity.status(HttpStatus.CREATED).body(loan);
     }
 
-    @PutMapping("/{id}/devolver")
-    public ResponseEntity<Loan> returnLoan(@PathVariable Long id) {
-        Loan loan = loanService.returnLoan(id);
-        return ResponseEntity.ok(loan);
+    @PutMapping("/{id}/return")
+    public ResponseEntity<LoanDTO> returnLoan(@PathVariable java.util.UUID id) {
+        LoanDTO returnedLoan = loanService.returnLoan(id);
+        return ResponseEntity.ok(returnedLoan);
     }
 
     @GetMapping("/ativos")
@@ -38,5 +38,11 @@ public class LoanController {
     public ResponseEntity<List<LoanDTO>> getAllLoans(){
         List<LoanDTO> allLoans = loanService.getAllLoans();
         return ResponseEntity.ok(allLoans);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteLoan(@PathVariable java.util.UUID id) {
+        loanService.deleteLoan(id);
+        return ResponseEntity.noContent().build();
     }
 }

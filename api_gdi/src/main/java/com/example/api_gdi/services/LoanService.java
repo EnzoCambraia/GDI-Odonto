@@ -104,4 +104,41 @@ public class LoanService {
                 .map(LoanDTO::new)
                 .collect(Collectors.toList());
     }
+
+    @Transactional
+    public LoanDTO returnLoan(java.util.UUID loanId){
+        Loan loan = loanRepository.findByIdWithItems(loanId)
+                .orElseThrow(() -> new RuntimeException("Empréstimo com ID " + loanId + "não encontrado."));
+
+        if (loan.getStatus() != LoanStatus.ATIVO){
+            throw new IllegalStateException("Este empréstimo não pode ser devolvido pois seu status é:" + loan.getStatus());
+            }
+        for (LoanEquipment item : loan.getLoanEquipments()){
+            Equipment equipment = item.getEquipment();
+            int returnedQuantity = item.getQuantity();
+
+            equipment.setQty_available(equipment.getQty_available() + returnedQuantity);
+        }
+
+        loan.setStatus(LoanStatus.DEVOLVIDO);
+        loan.setReturnDate(LocalDateTime.now());
+
+        Loan savedLoan = loanRepository.save(loan);
+
+        return new LoanDTO(savedLoan);
+    }
+
+    // ... dentro da sua classe LoanService ...
+
+    @Transactional
+    public void deleteLoan(java.util.UUID loanId) {
+        Loan loan = loanRepository.findById(loanId)
+                .orElseThrow(() -> new RuntimeException("Empréstimo com ID " + loanId + " não encontrado."));
+
+        if (loan.getStatus() == LoanStatus.ATIVO) {
+            throw new IllegalStateException("Não é possível excluir um empréstimo que ainda está ativo. Faça a devolução primeiro.");
+        }
+        
+        loanRepository.delete(loan);
+    }
 }
