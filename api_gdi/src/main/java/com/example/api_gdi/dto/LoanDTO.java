@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 @Data
 @NoArgsConstructor
 public class LoanDTO {
-    private Long id;
+    private java.util.UUID id;
     private String studentName;
     private String studentRegistry;
     private String studentCpf;

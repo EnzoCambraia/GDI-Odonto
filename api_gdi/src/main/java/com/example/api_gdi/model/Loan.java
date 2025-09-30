@@ -39,7 +39,6 @@ public class Loan {
     @Column(name = "student_email",nullable = false)
     private String studentEmail;
 
-
     @Column(name = "start_date", nullable = false)
     private LocalDateTime startDate;
 
@@ -53,7 +52,7 @@ public class Loan {
     @Column(nullable = false)
     private LoanStatus status = LoanStatus.ATIVO;
 
-    // Adicionado @JsonManagedReference para o lado "pai" da relação
+
     @OneToMany(mappedBy = "loan", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference("loan-loanEquip")
     private List<LoanEquipment> loanEquipments = new ArrayList<>();
