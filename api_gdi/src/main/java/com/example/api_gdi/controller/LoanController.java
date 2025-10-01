@@ -18,9 +18,9 @@ public class LoanController {
     private final LoanService loanService;
 
     @PostMapping
-    public ResponseEntity<Loan> createLoan(@RequestBody LoanRequest request) {
-        Loan loan = loanService.createLoan(request);
-        return ResponseEntity.status(HttpStatus.CREATED).body(loan);
+    public ResponseEntity<LoanDTO> createLoan(@RequestBody LoanRequest request) {
+        LoanDTO newLoan = loanService.createLoan(request);
+        return ResponseEntity.status(HttpStatus.CREATED).body(newLoan);
     }
 
     @PutMapping("/{id}/return")
