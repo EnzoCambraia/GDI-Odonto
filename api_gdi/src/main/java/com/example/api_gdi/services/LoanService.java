@@ -76,7 +76,10 @@ public class LoanService {
         for (LoanEquipment item : loan.getLoanEquipments()) {
             Equipment equipment = item.getEquipment();
             int returnedQuantity = item.getQuantity();
+
             equipment.setQty_available(equipment.getQty_available() + returnedQuantity);
+
+            equipmentService.save(equipment);
         }
 
         loan.setStatus(LoanStatus.DEVOLVIDO);

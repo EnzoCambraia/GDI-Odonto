@@ -23,7 +23,7 @@ public class LoanController {
         return ResponseEntity.status(HttpStatus.CREATED).body(newLoan);
     }
 
-    @PutMapping("/{id}/return")
+    @PutMapping("/{id}/returnLoan")
     public ResponseEntity<LoanDTO> returnLoan(@PathVariable java.util.UUID id) {
         LoanDTO returnedLoan = loanService.returnLoan(id);
         return ResponseEntity.ok(returnedLoan);
