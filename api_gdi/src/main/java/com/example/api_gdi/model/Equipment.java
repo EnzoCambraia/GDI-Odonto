@@ -39,8 +39,6 @@ public class Equipment {
     @Enumerated(EnumType.STRING)
     private EquipmentStatus status = EquipmentStatus.getDefault();
 
-    // 1. FetchType removido (padrão é LAZY, que é o correto)
-    // 2. Adicionado @JsonManagedReference para indicar o lado "pai" da serialização
     @OneToMany(mappedBy = "equipment")
     @JsonManagedReference("equipment-loanEquip")
     private List<LoanEquipment> loanEquipments = new ArrayList<>();
@@ -49,8 +47,8 @@ public class Equipment {
         return qty_available >= requestedQty;
     }
 
-    @PrePersist // Rodar antes de um equip ser salvo pela primeira vez
-    @PreUpdate // Rodar antes de um equip ser atualizado
+    @PrePersist
+    @PreUpdate
     public void updateStatusBasedOnQuantity(){
         if (this.qty_available <= 0){
             this.qty_available = 0;
