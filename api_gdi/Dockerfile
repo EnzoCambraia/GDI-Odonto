@@ -11,4 +11,5 @@ FROM eclipse-temurin:21-jre-jammy
 WORKDIR /app
 COPY --from=build /app/target/*.jar app.jar
 EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "app.jar"]
+# Este comando força o Render a imprimir o valor da variável ANTES de iniciar o Java
+ENTRYPOINT ["sh", "-c", "echo '>>>>>> SEGREDO JWT QUE O RENDER ESTA LENDO: [$SUPABASE_JWT_SECRET]' && java -jar app.jar"]
