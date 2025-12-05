@@ -26,18 +26,24 @@ public class User implements UserDetails {
     @Column(nullable = false, unique = true)
     private String email;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Role role;
+
+    private String password;
+
     @Column(name = "created_at", insertable = false, updatable = false)
     private LocalDateTime created_at;
 
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+        if (this.role == null) return List.of();
+        return List.of(new SimpleGrantedAuthority(this.role.getSpringRole()));
     }
 
     @Override
     public String getPassword() {
-        return "";
+        return this.password;
     }
 
     @Override
